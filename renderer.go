@@ -120,6 +120,7 @@ func (r Renderer) Render(content Content, width, height int) (img image.Image, e
 		dstRct := image.Rectangle{pt, pt.Add(outputMono.Bounds().Size())}
 		draw.Draw(dst, dstRct, outputMono, image.ZP, draw.Src)
 	}
+
 	return dst, nil
 
 }

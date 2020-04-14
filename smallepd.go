@@ -142,23 +142,61 @@ func (display smallEpd) Show(content Content) (err error) {
 	}
 
 	img, err := display.Renderer.Render(content, width, height)
-	display.prepare()
-	display.show(img)
-	display.sleep()
+
+	if err = display.prepare(); err != nil {
+		return
+	}
+
+	if err = display.show(img); err != nil {
+		return
+	}
+
+	if err = display.sleep(); err != nil {
+		return
+	}
+
 	return
 }
 
 func (display smallEpd) prepare() (err error) {
 	log.Debug("EPD42 Prepare")
-	display.reset()
-	display.sendCommand(BOOSTER_SOFT_START)
-	display.sendData([]byte{0x17})
-	display.sendData([]byte{0x17})
-	display.sendData([]byte{0x17}) // 07 0f 17 1f 27 2F 37 2f
-	display.sendCommand(POWER_ON)
-	display.waitUntilIdle()
-	display.sendCommand(PANEL_SETTING)
-	display.sendData([]byte{0x0F}) // LUT from OTP
+
+	if err = display.reset(); err != nil {
+		return
+	}
+
+	if err = display.sendCommand(BOOSTER_SOFT_START); err != nil {
+		return
+	}
+
+	if err = display.sendData([]byte{0x17}); err != nil {
+		return
+	}
+
+	if err = display.sendData([]byte{0x17}); err != nil {
+		return
+	}
+
+	if err = display.sendData([]byte{0x17}); err != nil {
+		return
+	} // 07 0f 17 1f 27 2F 37 2f
+
+	if err = display.sendCommand(POWER_ON); err != nil {
+		return
+	}
+
+	if err = display.waitUntilIdle(); err != nil {
+		return
+	}
+
+	if err = display.sendCommand(PANEL_SETTING); err != nil {
+		return
+	}
+
+	if err = display.sendData([]byte{0x0F}); err != nil {
+		return
+	} // LUT from OTP
+
 	log.Debug("EPD42 Prepare End")
 	return
 }
@@ -177,12 +215,31 @@ func (display smallEpd) show(img image.Image) (err error) {
 		img = imaging.Resize(img, display.Width(), display.Height(), imaging.Lanczos)
 	}
 	imageblack, imagered := display.convertImage(img)
-	display.sendCommand(DATA_START_TRANSMISSION_1)
-	display.sendData(imageblack)
-	display.sendCommand(DATA_START_TRANSMISSION_2)
-	display.sendData(imagered)
-	display.sendCommand(DISPLAY_REFRESH)
-	display.waitUntilIdle()
+
+	if err = display.sendCommand(DATA_START_TRANSMISSION_1); err != nil {
+		return
+	}
+
+	if err = display.sendData(imageblack); err != nil {
+		return
+	}
+
+	if err = display.sendCommand(DATA_START_TRANSMISSION_2); err != nil {
+		return
+	}
+
+	if err = display.sendData(imagered); err != nil {
+		return
+	}
+
+	if err = display.sendCommand(DISPLAY_REFRESH); err != nil {
+		return
+	}
+
+	if err = display.waitUntilIdle(); err != nil {
+		return
+	}
+
 	log.Debug("EPD42 Show End")
 	return
 }
@@ -190,17 +247,36 @@ func (display smallEpd) show(img image.Image) (err error) {
 // Clear clears the display
 func (display smallEpd) clear() (err error) {
 	log.Debug("EPD42 Clear")
-	display.sendCommand(DATA_START_TRANSMISSION_1)
+
+	if err = display.sendCommand(DATA_START_TRANSMISSION_1); err != nil {
+		return
+	}
+
 	// TODO: Verify that this is enough bits
 	for i := 0; i < display.Width()*display.Height()/8; i++ {
-		display.sendData([]byte{0xFF})
+		if err = display.sendData([]byte{0xFF}); err != nil {
+			return
+		}
 	}
-	display.sendCommand(DATA_START_TRANSMISSION_2)
+
+	if err = display.sendCommand(DATA_START_TRANSMISSION_2); err != nil {
+		return
+	}
+
 	for i := 0; i < display.Width()*display.Height()/8; i++ {
-		display.sendData([]byte{0xFF})
+		if err = display.sendData([]byte{0xFF}); err != nil {
+			return
+		}
 	}
-	display.sendCommand(DISPLAY_REFRESH)
-	display.waitUntilIdle()
+
+	if err = display.sendCommand(DISPLAY_REFRESH); err != nil {
+		return
+	}
+
+	if err = display.waitUntilIdle(); err != nil {
+		return
+	}
+
 	log.Debug("EPD42 Clear End")
 	return
 }
@@ -208,12 +284,31 @@ func (display smallEpd) clear() (err error) {
 // Sleep sends the display to sleep
 func (display smallEpd) sleep() (err error) {
 	log.Debug("EPD42  Sleep")
-	display.sendCommand(VCOM_AND_DATA_INTERVAL_SETTING)
-	display.sendData([]byte{0xF7}) // border floating
-	display.sendCommand(POWER_OFF)
-	display.waitUntilIdle()
-	display.sendCommand(DEEP_SLEEP)
-	display.sendData([]byte{0xA5}) // check code
+
+	if err = display.sendCommand(VCOM_AND_DATA_INTERVAL_SETTING); err != nil {
+		return
+	}
+
+	if err = display.sendData([]byte{0xF7}); err != nil {
+		return
+	} // border floating
+
+	if err = display.sendCommand(POWER_OFF); err != nil {
+		return
+	}
+
+	if err = display.waitUntilIdle(); err != nil {
+		return
+	}
+
+	if err = display.sendCommand(DEEP_SLEEP); err != nil {
+		return
+	}
+
+	if err = display.sendData([]byte{0xA5}); err != nil {
+		return
+	} // check code
+
 	log.Debug("EPD42 Sleep End")
 	return
 }
@@ -221,12 +316,22 @@ func (display smallEpd) sleep() (err error) {
 // Reset resets registers?
 func (display smallEpd) reset() (err error) {
 	log.Debug("EPD42 Reset")
-	_ = display.driver.DigitalWrite(display.RESET, gpio.High)
+
+	if err = display.driver.DigitalWrite(display.RESET, gpio.High); err != nil {
+		return
+	}
 	time.Sleep(200 * time.Millisecond)
-	_ = display.driver.DigitalWrite(display.RESET, gpio.Low)
+
+	if err = display.driver.DigitalWrite(display.RESET, gpio.Low); err != nil {
+		return
+	}
 	time.Sleep(200 * time.Millisecond)
-	_ = display.driver.DigitalWrite(display.RESET, gpio.High)
+
+	if err = display.driver.DigitalWrite(display.RESET, gpio.High); err != nil {
+		return
+	}
 	time.Sleep(200 * time.Millisecond)
+
 	log.Debug("EPD42 Reset End")
 	return
 }
@@ -235,10 +340,23 @@ func (display smallEpd) reset() (err error) {
 // command must be a valid EPD command
 func (display smallEpd) sendCommand(command Command) (err error) {
 	log.Debug("EPD42 SendCommand")
-	_ = display.driver.DigitalWrite(display.driver.CS(), gpio.Low)
-	_ = display.driver.DigitalWrite(display.DC, gpio.Low)
-	_ = display.driver.Write(command)
-	_ = display.driver.DigitalWrite(display.driver.CS(), gpio.High)
+
+	if err = display.driver.DigitalWrite(display.driver.CS(), gpio.Low); err != nil {
+		return
+	}
+
+	if err = display.driver.DigitalWrite(display.DC, gpio.Low); err != nil {
+		return
+	}
+
+	if err = display.driver.Write(command); err != nil {
+		return
+	}
+
+	if err = display.driver.DigitalWrite(display.driver.CS(), gpio.High); err != nil {
+		return
+	}
+
 	log.Debug("EPD42 SendCommand End")
 	return
 }
@@ -246,10 +364,22 @@ func (display smallEpd) sendCommand(command Command) (err error) {
 // SendData writes data to the SPI connection of the device
 func (display smallEpd) sendData(data []byte) (err error) {
 	log.Debug("EPD42 SendData")
-	_ = display.driver.DigitalWrite(display.driver.CS(), gpio.Low)
-	_ = display.driver.DigitalWrite(display.DC, gpio.High)
-	_ = display.driver.Write(data)
-	_ = display.driver.DigitalWrite(display.driver.CS(), gpio.High)
+	if err = display.driver.DigitalWrite(display.driver.CS(), gpio.Low); err != nil {
+		return
+	}
+
+	if err = display.driver.DigitalWrite(display.DC, gpio.High); err != nil {
+		return
+	}
+
+	if err = display.driver.Write(data); err != nil {
+		return
+	}
+
+	if err = display.driver.DigitalWrite(display.driver.CS(), gpio.High); err != nil {
+		return
+	}
+
 	log.Debug("EPD42 SendData End")
 	return
 }

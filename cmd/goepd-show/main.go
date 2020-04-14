@@ -49,6 +49,15 @@ func main() {
 		panic(err)
 	}
 
+	/*
+		file, err := os.Create("./test.jpg")
+		if err != nil {
+			log.Fatal(err)
+		}
+		jpeg.Encode(file, img, &jpeg.Options{Quality: 100})
+		file.Close()
+	*/
+
 	content := epd.Content{
 		Image: img,
 	}

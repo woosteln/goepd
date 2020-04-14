@@ -81,7 +81,7 @@ func (g gpioSpiInterface) Init(spiAddress string, pins ...string) (err error) {
 		log.Debugf("  SPI MOSI: %s", c.MOSI())
 		log.Debugf("  SPI MISO: %s", c.MISO())
 		log.Debugf("  SPI CS  : %s", c.CS())
-		g.cs = c.CS().String()
+		g.cs = c.CS().Name()
 	} else {
 		err = fmt.Errorf("Driver error verifying SPI pins\n")
 		p.Close()
@@ -109,10 +109,9 @@ func (g gpioSpiInterface) DigitalRead(pin string) (bool, error) {
 
 func (g gpioSpiInterface) DigitalWrite(pin string, level gpio.Level) error {
 	if pin == g.cs {
-		if pins, ok := g.C.(spi.Pins); ok {
-			pins.CS().Out(level)
-		} else {
-			return fmt.Errorf("Couldn't set CS pin to %s", level)
+		pins := g.C.(spi.Pins)
+		if err := pins.CS().Out(level); err != nil {
+			return err
 		}
 	}
 	if p, ok := g.Pins[pin]; ok {

@@ -9,6 +9,7 @@ import (
 	"periph.io/x/periph/conn/physic"
 	"periph.io/x/periph/conn/spi"
 	"periph.io/x/periph/conn/spi/spireg"
+	"periph.io/x/periph/host"
 )
 
 type Driver interface {
@@ -37,6 +38,10 @@ type gpioSpiInterface struct {
 }
 
 func (g gpioSpiInterface) Init(spiAddress string, pins ...string) (err error) {
+
+	if _, err = host.Init(); err != nil {
+		return
+	}
 
 	pinMap := make(map[string]gpio.PinIO)
 

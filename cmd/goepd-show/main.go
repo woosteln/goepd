@@ -53,7 +53,10 @@ func main() {
 		panic(err)
 	}
 
-	display.Show(content)
+	err = display.Show(content)
+	if err != nil {
+		panic(err)
+	}
 
 }
 

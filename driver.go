@@ -37,6 +37,12 @@ type gpioSpiInterface struct {
 	*gpioSpiData
 }
 
+func SpiGpioDriver() Driver {
+	return gpioSpiInterface{
+		&gpioSpiData{},
+	}
+}
+
 func (g gpioSpiInterface) Init(spiAddress string, pins ...string) (err error) {
 
 	if _, err = host.Init(); err != nil {

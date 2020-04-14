@@ -79,7 +79,7 @@ func Epd42(orientation Orientation, spiAddress, reset, dc, busy string) (display
 		width:       width,
 		height:      height,
 		orientation: orientation,
-		driver:      gpioSpiInterface{},
+		driver:      SpiGpioDriver(),
 	}
 
 	sepd := smallEpd{

@@ -117,7 +117,7 @@ func (g gpioSpiInterface) DigitalWrite(pin string, level gpio.Level) error {
 	if p, ok := g.Pins[pin]; ok {
 		return p.Out(level)
 	}
-	return fmt.Errorf("Could not write. Pin %s does not exist", pin)
+	return fmt.Errorf("Could not write. Pin %s does not exist. SPI cs pin is %s", pin, g.cs)
 }
 
 func (g gpioSpiInterface) Write(data []byte) error {

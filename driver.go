@@ -81,7 +81,7 @@ func (g gpioSpiInterface) Init(spiAddress string, pins ...string) (err error) {
 		log.Debugf("  SPI MOSI: %s", c.MOSI())
 		log.Debugf("  SPI MISO: %s", c.MISO())
 		log.Debugf("  SPI CS  : %s", c.CS())
-		g.cs = c.CS().Name()
+		g.cs = c.CS().String()
 	} else {
 		err = fmt.Errorf("Driver error verifying SPI pins\n")
 		p.Close()

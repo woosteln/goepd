@@ -82,7 +82,7 @@ func getImageData(uri string) (data []byte, err error) {
 	return
 }
 
-func congureLogging(level string) {
+func configureLogging(level string) {
 	switch level {
 	case "INFO":
 		log.SetLevel(log.InfoLevel)

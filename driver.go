@@ -110,9 +110,7 @@ func (g gpioSpiInterface) DigitalRead(pin string) (bool, error) {
 func (g gpioSpiInterface) DigitalWrite(pin string, level gpio.Level) error {
 	if pin == g.cs {
 		pins := g.C.(spi.Pins)
-		if err := pins.CS().Out(level); err != nil {
-			return err
-		}
+		return pins.CS().Out(level)
 	} else if p, ok := g.Pins[pin]; ok {
 		return p.Out(level)
 	}

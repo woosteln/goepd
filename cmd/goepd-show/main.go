@@ -15,6 +15,7 @@ import (
 	_ "image/png"
 
 	"github.com/namsral/flag"
+	log "github.com/sirupsen/logrus"
 	epd "github.com/woosteln/goepd"
 )
 
@@ -24,6 +25,7 @@ var (
 	BUSY        = ""
 	SPI_ADDRESS = ""
 	IMAGE       = ""
+	LOGLEVEL    = "WARN"
 )
 
 func main() {
@@ -33,8 +35,11 @@ func main() {
 	fs.StringVar(&RESET, "reset", RESET, "Name of RESET GPIO pin")
 	fs.StringVar(&BUSY, "busy", BUSY, "Name of BUSY GPIO pin")
 	fs.StringVar(&SPI_ADDRESS, "spi", SPI_ADDRESS, "SPI address. Use blank for default")
+	fs.StringVar(&LOGLEVEL, "loglevel", LOGLEVEL, "logging level to use")
 	fs.Parse(os.Args[1:])
 	IMAGE = os.Args[len(os.Args)-1]
+
+	configureLoging(LOGLEVEL)
 
 	imgData, err := getImageData(IMAGE)
 
@@ -75,4 +80,21 @@ func getImageData(uri string) (data []byte, err error) {
 	}
 	err = errors.New("Could not find image, was not a url or file path")
 	return
+}
+
+func congureLogging(level string) {
+	switch level {
+	case "INFO":
+		log.SetLevel(log.InfoLevel)
+	case "DEBUG":
+		log.SetLevel(log.DebugLevel)
+	case "WARN":
+		log.SetLevel(log.WarnLevel)
+	case "ERROR":
+		log.SetLevel(log.ErrorLevel)
+	case "TRACE":
+		log.SetLevel(log.TraceLevel)
+	default:
+		log.SetLevel(log.ErrorLevel)
+	}
 }

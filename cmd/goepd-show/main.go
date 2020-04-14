@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	_ "image/gif"
 	_ "image/jpeg"
@@ -66,6 +67,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	display.Clear()
+	time.Sleep(time.Millisecond * 500)
+	display.Clear()
+	time.Sleep(time.Millisecond * 500)
 
 	err = display.Show(content)
 	if err != nil {

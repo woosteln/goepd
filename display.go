@@ -20,6 +20,7 @@ type Content struct {
 
 type Display interface {
 	Show(content Content) (err error)
+	Clear() (err error)
 	Width() int
 	Height() int
 }

@@ -245,7 +245,7 @@ func (display smallEpd) show(img image.Image) (err error) {
 }
 
 // Clear clears the display
-func (display smallEpd) clear() (err error) {
+func (display smallEpd) Clear() (err error) {
 	log.Debug("EPD42 Clear")
 
 	if err = display.sendCommand(DATA_START_TRANSMISSION_1); err != nil {

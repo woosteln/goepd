@@ -118,12 +118,12 @@ func (g gpioSpiInterface) DigitalWrite(pin string, level gpio.Level) error {
 }
 
 func (g gpioSpiInterface) Write(data []byte) error {
-	read := make([]byte, len(data))
-	// for _, bt := range data {
-	if err := g.C.Tx(data, read); err != nil {
-		return err
+	read := make([]byte, 1)
+	for _, bt := range data {
+		if err := g.C.Tx([]byte{bt}, read); err != nil {
+			return err
+		}
 	}
-	// }
 	return nil
 }
 

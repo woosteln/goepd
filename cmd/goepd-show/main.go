@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	_ "image/gif"
 	_ "image/jpeg"
@@ -42,6 +41,16 @@ func main() {
 
 	configureLogging(LOGLEVEL)
 
+	display, err := epd.Epd42(epd.Landscape, SPI_ADDRESS, RESET, DC, BUSY)
+	if err != nil {
+		panic(err)
+	}
+
+	if IMAGE == "clear" {
+		display.Clear()
+		os.Exit(0)
+	}
+
 	imgData, err := getImageData(IMAGE)
 
 	img, _, err := image.Decode(bytes.NewBuffer(imgData))
@@ -62,15 +71,6 @@ func main() {
 	content := epd.Content{
 		Image: img,
 	}
-
-	display, err := epd.Epd42(epd.Landscape, SPI_ADDRESS, RESET, DC, BUSY)
-	if err != nil {
-		panic(err)
-	}
-	display.Clear()
-	time.Sleep(time.Millisecond * 500)
-	display.Clear()
-	time.Sleep(time.Millisecond * 500)
 
 	err = display.Show(content)
 	if err != nil {

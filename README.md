@@ -71,8 +71,17 @@ a utility called `goepd-show` that will let you interact with the display
 from the command line.
 
 ```bash
-goepd-show --dc 25 --reset 24 --busy 23 --spi "0.0" https://loremflickr.com/400/300
+goepd-show --dc 25 --reset 24 --busy 23 https://loremflickr.com/400/300
 ```
+
+if you want to clear the display
+
+```
+goepd-show --dc 25 --reset 24 --busy 23 clear
+```
+
+(Unless using a strange configuration, at least on rpi, spi will use "" address
+to get first available bus)
 
 Include it
 ----------

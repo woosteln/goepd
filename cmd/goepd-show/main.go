@@ -39,7 +39,7 @@ func main() {
 	fs.Parse(os.Args[1:])
 	IMAGE = os.Args[len(os.Args)-1]
 
-	configureLoging(LOGLEVEL)
+	configureLogging(LOGLEVEL)
 
 	imgData, err := getImageData(IMAGE)
 

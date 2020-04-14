@@ -106,9 +106,12 @@ func (r Renderer) Render(content Content, width, height int) (img image.Image, e
 
 	if content.Image != nil {
 		var maxWidth, x int
-		if imageOnly {
+		imageMatchesScreen := content.Image.Bounds().Size().X == width && content.Image.Bounds().Size().Y == height
+		if imageOnly && !imageMatchesScreen {
 			maxWidth = width - 20
 			x = 10
+		} else if imageMatchesScreen {
+			maxWidth = width
 		} else {
 			maxWidth = (width - 40) / 2
 			x = width/2 + 10

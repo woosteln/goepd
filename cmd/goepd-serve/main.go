@@ -45,6 +45,8 @@ func main() {
 
 	server.HandleContent(func(content serve.DisplayContent) {
 
+		log.Debugf("Got content from server %v", content)
+
 		if content.Image == nil && content.ImageUrl != "" {
 			content.Image, err = loadImageFromUrl(content.ImageUrl)
 		}

@@ -40,11 +40,6 @@ func New() EpdServer {
 
 	server := EpdServer{serverData: &serverData{}, Echo: e}
 
-	// Return the current display image
-	e.GET("/display/content", func(c echo.Context) (err error) {
-		return c.String(200, "OK")
-	})
-
 	// Update the display content
 	e.POST("/display/content", func(c echo.Context) (err error) {
 

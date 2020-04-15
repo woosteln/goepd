@@ -32,7 +32,7 @@ func main() {
 
 	fs := flag.NewFlagSetWithEnvPrefix(os.Args[0], "EPD", 0)
 	fs.StringVar(&DC, "dc", DC, "Name of DC GPIO pin")
-	fs.StringVar(&RESET, "reset", RESET, "Name of RESET GPIO pin")
+	fs.StringVar(&RESET, "rst", RESET, "Name of RESET GPIO pin")
 	fs.StringVar(&BUSY, "busy", BUSY, "Name of BUSY GPIO pin")
 	fs.StringVar(&SPI_ADDRESS, "spi", SPI_ADDRESS, "SPI address. Use blank for default")
 	fs.StringVar(&LOGLEVEL, "loglevel", LOGLEVEL, "logging level to use")

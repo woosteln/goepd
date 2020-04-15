@@ -71,17 +71,36 @@ a utility called `goepd-show` that will let you interact with the display
 from the command line.
 
 ```bash
-goepd-show --dc 25 --reset 24 --busy 23 https://loremflickr.com/400/300
+goepd-show --dc 25 --rst 24 --busy 23 https://loremflickr.com/400/300
 ```
 
 if you want to clear the display
 
 ```
-goepd-show --dc 25 --reset 24 --busy 23 clear
+goepd-show --dc 25 --rst 24 --busy 23 clear
 ```
 
 (Unless using a strange configuration, at least on rpi, spi will use "" address
 to get first available bus)
+
+If you're looking for something to use rather than building a go app, we've got
+you covered.
+
+`goepd-serve` will start an http server that will let you post content updates
+to the display.
+
+```bash
+goepd-serve --dc 25 --rst 24 --busy 23 https://loremflickr.com/400/300
+```
+
+and you can then post an update to it
+
+```bash
+curl -F 'imageurl=https://loremflickr.com/400/300' $DEVICE_ADDRESS:8080/display/content
+```
+
+__!IMPORTANT!__ Don't just copy and paste, remember to substitute your device address
+and the pins you've set up.
 
 Include it
 ----------

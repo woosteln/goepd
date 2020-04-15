@@ -11,6 +11,7 @@ import (
 	dither "github.com/esimov/dithergo"
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"
 	"golang.org/x/image/math/fixed"
@@ -107,11 +108,15 @@ func (r Renderer) Render(content Content, width, height int) (img image.Image, e
 	if content.Image != nil {
 		var maxWidth, x int
 		imageMatchesScreen := content.Image.Bounds().Size().X == width && content.Image.Bounds().Size().Y == height
-		if imageOnly && !imageMatchesScreen {
-			maxWidth = width - 20
-			x = 10
-		} else if imageMatchesScreen {
-			maxWidth = width
+		if imageOnly {
+			if !imageMatchesScreen {
+				log.Debugf("Image doesn't fit screen. Adding border")
+				maxWidth = width - 20
+				x = 10
+			} else {
+				log.Debugf("Image fits screen. Going fullscreen")
+				maxWidth = width
+			}
 		} else {
 			maxWidth = (width - 40) / 2
 			x = width/2 + 10

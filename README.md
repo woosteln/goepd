@@ -4,11 +4,6 @@ GOEPD
 A golang spi driver for [Waveshare's epd displays](https://www.waveshare.com/product/displays/e-paper.htm)
 using [periph.io](https://periph.io/) under the hood.
 
-### WARNING
-
-This is the first push so everything you read below describes intended state right now.
-There may be some quirks. I'll remove the warning when its settled.
-
 Before you dive in
 ------------------
 
@@ -67,8 +62,11 @@ Use it
 ------
 
 The main package is a library but the `cmd/...` bit above will have installed
-a utility called `goepd-show` that will let you interact with the display 
-from the command line.
+a couple of utilities.
+
+### `goepd-show`
+
+Cmd line tool to update the display.
 
 ```bash
 goepd-show --dc 25 --rst 24 --busy 23 https://loremflickr.com/400/300
@@ -86,6 +84,8 @@ to get first available bus)
 If you're looking for something to use rather than building a go app, we've got
 you covered.
 
+### `goepd-serve`
+
 `goepd-serve` will start an http server that will let you post content updates
 to the display.
 
@@ -99,11 +99,39 @@ and you can then post an update to it
 curl -F 'imageurl=https://loremflickr.com/400/300' $DEVICE_ADDRESS:8080/display/content
 ```
 
+or if you want to add some text
+
+```bash
+curl -F title=Hello \
+  -F body=world \
+  -F "footer=Drop's mic" \
+  -F 'imageurl=https://loremflickr.com/400/300' $DEVICE_ADDRESS:8080/display/content
+```
+
+or post an actual image
+
+```bash
+curl -F 'imageurl=@/absolute/path/to/image.jpg' $DEVICE_ADDRESS:8080/display/content
+```
+
+You can post data as json or multi-part for ( necessary if you're posting and actual
+image).
+
+Fields are:
+
+- `title`: String. Title text. Placed top left
+- `body`: String. Body text. Comes under title on the left
+- `footer`: String. Footer text. Placed bottom left
+- `imageurl`: String. HTTP url of a jpg, png or gif image
+- `image`: Bytes: Actual image data. jpg, png or gif
+
 __!IMPORTANT!__ Don't just copy and paste, remember to substitute your device address
 and the pins you've set up.
 
-Include it
-----------
+-----------------------------------------------------------------
+
+Library
+-------
 
 Want to drive the display from your app, have a look at the src of `cmd/goepd-show/main.go`
 
@@ -137,7 +165,7 @@ func main(){
     Footer: "Thank you and good night"
   }
 
-  display.Update(content)
+  display.Show(content)
 
 }
 ```
@@ -170,13 +198,13 @@ References and libraries used
 TODO List
 ---------
 
+- Improve layout / coloring in renderer
 - Explore a better way of embedding default fonts (golangs don't work well on this display). Packages size can be quite big.
 - Verify support and create constructors for other boards
 - Include support for black/white only boards
 - Explore supporting larger display modules
 - Introduce testing
 - Verify / introduce support for HATs / raw
-- Improve layout / coloring in renderer
 
 Contributing
 ------------

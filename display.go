@@ -2,8 +2,10 @@ package epd
 
 import (
 	"image"
+	"strings"
 )
 
+// Orientation represents a screen orientation
 type Orientation int
 
 const (
@@ -11,6 +13,21 @@ const (
 	Portrait  Orientation = 1
 )
 
+// OrientationFromString maps a string name of an
+// orientation ("landscape" or "portrait" ) to its
+// `Orientation`.
+// It is case insensitive.
+// If a match is not found it will default to landscape.
+func OrientationFromString(o string) Orientation {
+	if strings.ToLower(o) == "portrait" {
+		return Portrait
+	} else {
+		return Landscape
+	}
+}
+
+// Content is a DTO for transferring content to be
+// shown on the display.
 type Content struct {
 	Title  string
 	Body   string
@@ -18,6 +35,8 @@ type Content struct {
 	Image  image.Image
 }
 
+// Display represents the abstract high-level functions
+// that can be called on an attached E-paper display
 type Display interface {
 	Show(content Content) (err error)
 	Clear() (err error)

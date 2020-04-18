@@ -68,8 +68,8 @@ func main() {
 		file.Close()
 	*/
 
-	content := epd.Content{
-		Image: img,
+	content := epd.RenderContent{
+		"image": img,
 	}
 
 	err = display.Show(content)

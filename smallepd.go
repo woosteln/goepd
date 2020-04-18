@@ -64,22 +64,30 @@ type smallEpd struct {
 
 // Epd42 returns a display suitable for driving a waveshare
 // 4.2" epaper screen.
-func Epd42(orientation Orientation, spiAddress, reset, dc, busy string) (display Display, err error) {
+func Epd42(orientation Orientation, spiAddress, reset, dc, busy string, renderOpts ...RenderOpts) (display Display, err error) {
 
 	width := 400
 	height := 300
 
-	renderer, err := LoadRenderer()
-	if err != nil {
-		return
+	var renderOpt RenderOpts
+	if len(renderOpts) == 0 {
+		// We know that using the default font
+		// will work, so no need to handle error
+		renderer, _ := NewFlexRenderEngine(10, 72)
+		renderOpt = RenderOpts{
+			Renderer: renderer,
+			Template: TplDefaultAuto,
+		}
+	} else {
+		renderOpt = renderOpts[0]
 	}
 
 	base := epd{
-		Renderer:    renderer,
-		width:       width,
-		height:      height,
-		orientation: orientation,
-		driver:      SpiGpioDriver(),
+		RendererOpts: renderOpt,
+		width:        width,
+		height:       height,
+		orientation:  orientation,
+		driver:       SpiGpioDriver(),
 	}
 
 	sepd := smallEpd{
@@ -129,7 +137,11 @@ func (display smallEpd) Width() int {
 	return display.width
 }
 
-func (display smallEpd) Show(content Content) (err error) {
+func (display smallEpd) Show(content RenderContent) (err error) {
+	return display.ShowWithTemplate(content, display.RendererOpts.Template)
+}
+
+func (display smallEpd) ShowWithTemplate(content RenderContent, tpl RenderTemplate) (err error) {
 
 	var width, height int
 
@@ -141,7 +153,8 @@ func (display smallEpd) Show(content Content) (err error) {
 		height = display.width
 	}
 
-	img, err := display.Renderer.Render(content, width, height)
+	opts := display.RendererOpts
+	img, err := opts.Renderer.Render(content, width, height, tpl)
 
 	if err = display.prepare(); err != nil {
 		return

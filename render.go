@@ -204,7 +204,11 @@ func (r flexRenderEngine) Render(content RenderContent, width, height int, layou
 	for id, item := range content {
 		node, err := root.FindNodeById(id)
 		if err == nil {
-			node.Content = item
+			if x, ok := item.(string); ok {
+				node.Content = x
+			} else {
+				node.Content = item
+			}
 		}
 	}
 

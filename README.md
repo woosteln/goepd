@@ -209,6 +209,9 @@ References and libraries used
 - Image dithering using [github.com/esimov/dithergo](https://github.com/esimov/dithergo)
 - Packed using [github.com/GeertJohan/go.rice](https://github.com/GeertJohan/go.rice)
 - Default font [github.com/anthonyfok/fonts-wqy-microhei](https://github.com/anthonyfok/fonts-wqy-microhei)
+- Excellent Go port of FlexBox layout engine [github.com/kjk/flex](https://github.com/kjk/flex) (poorly used currently)
+- My logger of choice (github.com/sirupsen/logrus)[https://github.com/sirupsen/logrus]
+- Excellent, simple app flag config (github.com/namsral/flag)[https://github.com/namsral/flag]
 - [Licences](./licenses)
 
 TODO List

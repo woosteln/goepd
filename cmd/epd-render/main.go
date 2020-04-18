@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/namsral/flag"
-	"github.com/woosteln/epd"
+	epd "github.com/woosteln/goepd"
 )
 
 var (

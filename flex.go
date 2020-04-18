@@ -185,6 +185,8 @@ func (n *Node) Inflate(config ...*flex.Config) (flexNode *flex.Node) {
 	flexNode.StyleSetJustifyContent(FlexJustifyFromString(n.JustifyContent))
 	if hasContent {
 		flexNode.StyleSetPadding(flex.EdgeAll, n.Padding)
+	} else {
+		flexNode.StyleSetPadding(flex.EdgeAll, 0)
 	}
 	if PatternInt.Match([]byte(n.FlexBasis)) {
 		i, _ := strconv.Atoi(n.FlexBasis)

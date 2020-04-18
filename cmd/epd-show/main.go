@@ -82,7 +82,7 @@ func main() {
 func getImageData(uri string) (data []byte, err error) {
 	if strings.HasPrefix(IMAGE, "http://") || strings.HasPrefix(IMAGE, "https://") {
 		response, errr := http.Get(IMAGE)
-		if err != nil {
+		if errr != nil {
 			err = errr
 			return
 		}

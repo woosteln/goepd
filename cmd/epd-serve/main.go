@@ -54,7 +54,7 @@ func main() {
 		display.Show(epd.RenderContent{
 			"title":  content.Title,
 			"body":   content.Body,
-			"image":  content.Image,
+			"img":    content.Image,
 			"footer": content.Footer,
 		})
 	})

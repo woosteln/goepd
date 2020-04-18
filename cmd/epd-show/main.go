@@ -69,7 +69,7 @@ func main() {
 	*/
 
 	content := epd.RenderContent{
-		"image": img,
+		"img": img,
 	}
 
 	err = display.Show(content)

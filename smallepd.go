@@ -73,7 +73,7 @@ func Epd42(orientation Orientation, spiAddress, reset, dc, busy string, renderOp
 	if len(renderOpts) == 0 {
 		// We know that using the default font
 		// will work, so no need to handle error
-		renderer, _ := NewFlexRenderEngine(10, 72)
+		renderer, _ := NewFlexRenderEngine(11, 72)
 		renderOpt = RenderOpts{
 			Renderer: renderer,
 			Template: TplDefaultAuto,

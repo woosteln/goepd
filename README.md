@@ -16,6 +16,22 @@ and red. More coming soon...)
 I'm hoping, though haven't explored it yet, that all the displays, 4.2 inches and under at least,
 share a common command api. If not, support for other devices may take a bit longer.
 
+update
+------
+
+CLI tools are now prefixed with `epd` rather than `goepd` so they're:
+
+- `epd-show`
+- `epd-serve`
+
+There's also a new one called `epd-render` to test out the renderer... But nothing
+major yet.
+
+Tagging this with a version now and will try and keep these api's reasonably
+stable, especially for the cli apps.
+
+Also, new dev will now be on feature branches and not master.
+
 Setting up
 ----------
 
@@ -64,18 +80,18 @@ Use it
 The main package is a library but the `cmd/...` bit above will have installed
 a couple of utilities.
 
-### `goepd-show`
+### `epd-show`
 
 Cmd line tool to update the display.
 
 ```bash
-goepd-show --dc 25 --rst 24 --busy 23 https://loremflickr.com/400/300
+epd-show --dc 25 --rst 24 --busy 23 https://loremflickr.com/400/300
 ```
 
 if you want to clear the display
 
 ```
-goepd-show --dc 25 --rst 24 --busy 23 clear
+epd-show --dc 25 --rst 24 --busy 23 clear
 ```
 
 (Unless using a strange configuration, at least on rpi, spi will use "" address
@@ -84,13 +100,13 @@ to get first available bus)
 If you're looking for something to use rather than building a go app, we've got
 you covered.
 
-### `goepd-serve`
+### `epd-serve`
 
 `goepd-serve` will start an http server that will let you post content updates
 to the display.
 
 ```bash
-goepd-serve --dc 25 --rst 24 --busy 23 https://loremflickr.com/400/300
+epd-serve --dc 25 --rst 24 --busy 23 https://loremflickr.com/400/300
 ```
 
 and you can then post an update to it

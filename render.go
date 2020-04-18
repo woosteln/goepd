@@ -310,6 +310,10 @@ func scaleToTarget(target, base, applyTo float64) (applied float64) {
 
 func (r flexRenderEngine) MeasureText(text string, fontScale float64, pixelWidth float64) (width, height float64) {
 
+	if text == "" {
+		return 0, 0
+	}
+
 	var face font.Face
 
 	face = truetype.NewFace(r.font, &truetype.Options{
@@ -413,6 +417,10 @@ func (r flexRenderEngine) printLayout(node *flex.Node, level int) {
 }
 
 func (r flexRenderEngine) drawText(text string, scale float64, bounds image.Rectangle, dst *image.RGBA) {
+
+	if text == "" {
+		return
+	}
 
 	var face font.Face
 
